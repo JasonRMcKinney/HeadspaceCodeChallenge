@@ -3,7 +3,7 @@ package com.example.headspacecodechallenge.db.entities
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.example.headspacecodechallenge.model.ImageResponseItem
+import com.example.headspacecodechallenge.model.ImageItem
 
 @Entity(tableName = "imageTable")
 class ImageEntry(
@@ -25,7 +25,7 @@ class ImageEntry(
 ) {
     constructor() : this("", "", 0, 0, "")
 
-    fun getImageEntryFromResponse(response: ImageResponseItem): ImageEntry {
+    fun getImageEntryFromResponse(response: ImageItem): ImageEntry {
         this.url = response.url
         this.author = response.author
         this.width = response.width

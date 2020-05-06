@@ -1,12 +1,13 @@
 package com.example.headspacecodechallenge.repository
 
 import com.example.headspacecodechallenge.db.entities.ImageEntry
-import com.example.headspacecodechallenge.model.ImageResponseItem
+import com.example.headspacecodechallenge.model.ImageResponse
+import io.reactivex.Single
 
 interface ImageRepository {
-    fun allImages(): Array<ImageEntry>
+    fun allImages(): List<ImageEntry>
 
     fun insertImage(image: ImageEntry)
 
-    fun webImages(): List<ImageResponseItem>
+    fun webImages(): Single<ImageResponse>
 }

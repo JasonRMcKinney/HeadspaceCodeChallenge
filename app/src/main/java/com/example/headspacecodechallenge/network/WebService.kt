@@ -1,7 +1,8 @@
 package com.example.headspacecodechallenge.network
 
-import com.example.headspacecodechallenge.model.ImageResponseItem
+import com.example.headspacecodechallenge.model.ImageResponse
 import com.example.headspacecodechallenge.utils.Constants
+import io.reactivex.Single
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -34,5 +35,5 @@ interface WebService {
     }
 
     @GET(Constants.endpoint)
-    fun getImages(): List<ImageResponseItem>
+    fun getImages(): Single<ImageResponse>
 }
