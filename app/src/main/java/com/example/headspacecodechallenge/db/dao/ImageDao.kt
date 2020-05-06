@@ -10,7 +10,7 @@ import com.example.headspacecodechallenge.db.entities.ImageEntry
 interface ImageDao {
 
     @Query("SELECT * FROM imageTable")
-    fun getAllImages(): Array<ImageEntry>
+    fun getAllImages(): List<ImageEntry>
 
     @Insert(onConflict = IGNORE)
     fun insertImages(image: ImageEntry): Long

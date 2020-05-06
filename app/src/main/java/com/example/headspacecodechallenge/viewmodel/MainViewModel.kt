@@ -1,5 +1,6 @@
 package com.example.headspacecodechallenge.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.headspacecodechallenge.db.entities.ImageEntry
@@ -17,11 +18,11 @@ class MainViewModel constructor(private val imageRepository: ImageRepository) : 
         disposable.add(
             imageRepository.webImages().subscribe({
                 loaded = true
-                if (it.imageItems.isEmpty()) {
-                    state.value = AppState.ERROR("No Articles Retrieved")
+                if (it.isEmpty()) {
+                    state.value = AppState.EMPTY
                 } else {
-                    for (i in 0..it.imageItems.size) {
-                        val entry = ImageEntry().getImageEntryFromResponse(it.imageItems[i])
+                    for (i in 0..it.size) {
+                        val entry = ImageEntry().getImageEntryFromResponse(it[i])
                         imageRepository.insertImage(entry)
                     }
                     state.value = AppState.SUCCESS(imageRepository.allImages())
@@ -32,13 +33,14 @@ class MainViewModel constructor(private val imageRepository: ImageRepository) : 
                     is UnknownHostException -> "No Internet Connection"
                     else -> it.localizedMessage
                 }
+                Log.d("EROROR", errorString)
                 state.value = AppState.ERROR(errorString)
             })
         )
     }
 
     sealed class AppState {
-        data class EMPTY(val imageList) : AppState()
+        object EMPTY : AppState()
         object LOADING : AppState()
         data class SUCCESS(val imageList: List<ImageEntry>) : AppState()
         data class ERROR(val message: String) : AppState()

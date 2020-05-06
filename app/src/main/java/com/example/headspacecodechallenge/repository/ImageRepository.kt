@@ -1,7 +1,7 @@
 package com.example.headspacecodechallenge.repository
 
 import com.example.headspacecodechallenge.db.entities.ImageEntry
-import com.example.headspacecodechallenge.model.ImageResponse
+import com.example.headspacecodechallenge.model.ImageItem
 import io.reactivex.Single
 
 interface ImageRepository {
@@ -9,5 +9,5 @@ interface ImageRepository {
 
     fun insertImage(image: ImageEntry)
 
-    fun webImages(): Single<ImageResponse>
+    fun webImages(): Single<Array<ImageItem>>
 }
