@@ -13,6 +13,6 @@ interface ImageDao {
     fun getAllImages(): Array<ImageEntry>
 
     @Insert(onConflict = REPLACE)
-    fun insertImages(Image: ImageEntry): Long
+    fun insertImages(image: ImageEntry): Long
 
 }
