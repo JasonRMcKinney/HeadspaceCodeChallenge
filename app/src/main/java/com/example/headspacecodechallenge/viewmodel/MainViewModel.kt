@@ -21,8 +21,8 @@ class MainViewModel constructor(private val imageRepository: ImageRepository) : 
                 if (it.isEmpty()) {
                     state.value = AppState.EMPTY
                 } else {
-                    for (i in 0..it.size) {
-                        val entry = ImageEntry().getImageEntryFromResponse(it[i])
+                    for (element in it) {
+                        val entry = ImageEntry().getImageEntryFromResponse(element)
                         imageRepository.insertImage(entry)
                     }
                     state.value = AppState.SUCCESS(imageRepository.allImages())
