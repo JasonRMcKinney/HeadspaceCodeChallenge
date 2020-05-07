@@ -8,6 +8,7 @@ import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.http.GET
+import retrofit2.http.Query
 import java.util.concurrent.TimeUnit
 
 interface WebService {
@@ -34,5 +35,5 @@ interface WebService {
     }
 
     @GET(Constants.endpoint)
-    suspend fun getImages(): Array<ImageItem>
+    suspend fun getImages(@Query("page") page: Int): Array<ImageItem>
 }

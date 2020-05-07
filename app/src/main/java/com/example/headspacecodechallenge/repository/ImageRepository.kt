@@ -8,5 +8,5 @@ interface ImageRepository {
 
     suspend fun insertImage(image: ImageEntry)
 
-    suspend fun webImages(): Array<ImageItem>
+    suspend fun webImages(page: Int): Array<ImageItem>
 }

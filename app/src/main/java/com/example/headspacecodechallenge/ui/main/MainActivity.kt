@@ -25,6 +25,7 @@ class MainActivity : AppCompatActivity() {
     lateinit var viewModel: MainViewModel
     lateinit var imageAdapter: ImageAdapter
     private var imageDatabase: ImageDatabase? = null
+    private var pageCounter = 1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,7 +50,7 @@ class MainActivity : AppCompatActivity() {
         })
 
         if (!viewModel.loaded) {
-            viewModel.getImages()
+            viewModel.getImages(pageCounter)
         }
     }
 
@@ -67,7 +68,7 @@ class MainActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.action_refresh -> {
-                viewModel.getImages()
+                viewModel.getImages(pageCounter)
                 true
             }
             else -> super.onOptionsItemSelected(item)
@@ -82,8 +83,13 @@ class MainActivity : AppCompatActivity() {
         progressBar.visibility = View.GONE
         rvImages.visibility = View.VISIBLE
         containerMessage.visibility = View.GONE
-        Toast.makeText(this, "There are no Items to display", Toast.LENGTH_LONG)
-            .show()
+        if (imageAdapter.itemCount > 0) {
+            Toast.makeText(this, "No New Items were added", Toast.LENGTH_LONG)
+                .show()
+        } else {
+            Toast.makeText(this, "There are no New Items to add", Toast.LENGTH_LONG)
+                .show()
+        }
     }
 
     private fun displayImages(images: List<ImageEntry>) {
@@ -95,6 +101,7 @@ class MainActivity : AppCompatActivity() {
         progressBar.visibility = View.GONE
         rvImages.visibility = View.VISIBLE
         containerMessage.visibility = View.GONE
+        pageCounter++
     }
 
     private fun displayMessage(message: String) {

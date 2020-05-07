@@ -18,12 +18,12 @@ class MainViewModel constructor(private val imageRepository: ImageRepository) : 
     val state = MutableLiveData<AppState>(AppState.LOADING)
     var loaded = false
 
-    fun getImages() {
+    fun getImages(page: Int) {
         state.value = AppState.LOADING
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
                 try {
-                    var webImages = imageRepository.webImages()
+                    var webImages = imageRepository.webImages(page)
 
 
                     if (webImages.isEmpty() && !loaded) {

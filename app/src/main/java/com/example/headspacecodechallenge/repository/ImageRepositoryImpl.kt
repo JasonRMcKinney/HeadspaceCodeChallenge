@@ -22,8 +22,8 @@ class ImageRepositoryImpl(
         database?.imageDao()?.insertImages(image)
     }
 
-    override suspend fun webImages(): Array<ImageItem> {
-        return WebService.instance.getImages()
+    override suspend fun webImages(page: Int): Array<ImageItem> {
+        return WebService.instance.getImages(page)
     }
 
 
