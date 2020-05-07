@@ -15,14 +15,12 @@ import com.example.headspacecodechallenge.db.entities.ImageEntry
 import com.example.headspacecodechallenge.network.WebService
 import com.example.headspacecodechallenge.repository.ImageRepositoryImpl
 import com.example.headspacecodechallenge.ui.adapter.ImageAdapter
-import com.example.headspacecodechallenge.ui.listener.ImageItemClickListener
 import com.example.headspacecodechallenge.viewmodel.MainViewModel
 import com.example.headspacecodechallenge.viewmodel.factory.MainViewModelFactory
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.item_photo.*
 
 
-class MainActivity : AppCompatActivity(), ImageItemClickListener {
+class MainActivity : AppCompatActivity() {
 
     lateinit var viewModel: MainViewModel
     lateinit var imageAdapter: ImageAdapter
@@ -121,17 +119,7 @@ class MainActivity : AppCompatActivity(), ImageItemClickListener {
 
     private fun initRecyclerView() {
         rvImages.layoutManager = LinearLayoutManager(this)
-        imageAdapter = ImageAdapter(mutableListOf(), this)
+        imageAdapter = ImageAdapter(mutableListOf())
         rvImages.adapter = imageAdapter
-    }
-
-    override fun onItemClick() {
-        if (imageAuthor.visibility == View.GONE) {
-            imageAuthor.visibility = View.VISIBLE
-            imageDimensions.visibility = View.VISIBLE
-        } else {
-            imageAuthor.visibility = View.GONE
-            imageDimensions.visibility = View.GONE
-        }
     }
 }

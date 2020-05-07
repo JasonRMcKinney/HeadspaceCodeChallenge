@@ -5,7 +5,6 @@ import com.example.headspacecodechallenge.utils.Constants
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
-import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.http.GET
 import retrofit2.http.Query
@@ -27,7 +26,6 @@ interface WebService {
             val retrofit = Retrofit.Builder()
                 .baseUrl(Constants.baseUrl)
                 .client(okHttpClient)
-                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .addConverterFactory(MoshiConverterFactory.create())
                 .build()
             retrofit.create(WebService::class.java)

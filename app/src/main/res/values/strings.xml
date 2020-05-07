@@ -5,4 +5,5 @@
     <string name="tools_author">Author</string>
     <string name="tools_dimen">HHHH x WWWW</string>
     <string name="defaultContDesc">Image</string>
+    <string name="artist">Artist:</string>
 </resources>

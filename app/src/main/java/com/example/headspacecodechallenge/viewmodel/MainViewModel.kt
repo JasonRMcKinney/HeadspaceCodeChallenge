@@ -6,7 +6,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.headspacecodechallenge.db.entities.ImageEntry
 import com.example.headspacecodechallenge.repository.ImageRepository
-import io.reactivex.disposables.CompositeDisposable
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -14,7 +13,6 @@ import retrofit2.HttpException
 import java.net.UnknownHostException
 
 class MainViewModel constructor(private val imageRepository: ImageRepository) : ViewModel() {
-    private val disposable = CompositeDisposable()
     val state = MutableLiveData<AppState>(AppState.LOADING)
     var loaded = false
 
@@ -23,7 +21,7 @@ class MainViewModel constructor(private val imageRepository: ImageRepository) : 
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
                 try {
-                    var webImages = imageRepository.webImages(page)
+                    val webImages = imageRepository.webImages(page)
 
 
                     if (webImages.isEmpty() && !loaded) {
@@ -34,7 +32,7 @@ class MainViewModel constructor(private val imageRepository: ImageRepository) : 
                         loaded = true
                         for (i in 0 until webImages.size - 1) {
                             val entry = ImageEntry().getImageEntryFromResponse(webImages[i])
-                            var insertResult = imageRepository.insertImage(entry)
+                            val insertResult = imageRepository.insertImage(entry)
                             Log.d("INSERTS", "INSERT $i Result = $insertResult Entry = $entry")
                         }
                         val allImages = imageRepository.allImages()
