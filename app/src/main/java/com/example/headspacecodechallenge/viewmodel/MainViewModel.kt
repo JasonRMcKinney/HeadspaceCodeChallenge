@@ -15,7 +15,7 @@ import java.net.UnknownHostException
 
 class MainViewModel constructor(private val imageRepository: ImageRepository) : ViewModel() {
     private val disposable = CompositeDisposable()
-    val state = MutableLiveData<AppState>()
+    val state = MutableLiveData<AppState>(AppState.LOADING)
     var loaded = false
 
     fun getImages() {
@@ -25,10 +25,13 @@ class MainViewModel constructor(private val imageRepository: ImageRepository) : 
                 try {
                     var webImages = imageRepository.webImages()
 
-                    loaded = true
-                    if (webImages.isEmpty()) {
+
+                    if (webImages.isEmpty() && !loaded) {
+                        Log.d("EMPTY", "Loaded = $loaded")
+                        loaded = true
                         state.value = AppState.EMPTY
                     } else {
+                        loaded = true
                         for (i in 0 until webImages.size - 1) {
                             val entry = ImageEntry().getImageEntryFromResponse(webImages[i])
                             var insertResult = imageRepository.insertImage(entry)
