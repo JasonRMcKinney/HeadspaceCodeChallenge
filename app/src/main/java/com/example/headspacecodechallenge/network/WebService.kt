@@ -2,13 +2,13 @@ package com.example.headspacecodechallenge.network
 
 import com.example.headspacecodechallenge.model.ImageItem
 import com.example.headspacecodechallenge.utils.Constants
-import io.reactivex.Single
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.http.GET
+import retrofit2.http.Query
 import java.util.concurrent.TimeUnit
 
 interface WebService {
@@ -35,5 +35,5 @@ interface WebService {
     }
 
     @GET(Constants.endpoint)
-    fun getImages(): Single<Array<ImageItem>>
+    suspend fun getImages(@Query("page") page: Int): Array<ImageItem>
 }

@@ -21,7 +21,7 @@ class ImageEntry(
     var height: Int,
 
     @ColumnInfo(name = "download_url")
-    var downloadUrl: String
+    var download_url: String
 ) {
     constructor() : this("", "", 0, 0, "")
 
@@ -30,7 +30,7 @@ class ImageEntry(
         this.author = response.author
         this.width = response.width
         this.height = response.height
-        this.downloadUrl = response.downloadUrl
+        this.download_url = response.download_url
         return this
     }
 }

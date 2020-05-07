@@ -5,8 +5,13 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.headspacecodechallenge.R
 import com.example.headspacecodechallenge.db.entities.ImageEntry
+import com.example.headspacecodechallenge.ui.listener.ImageItemClickListener
 
-class ImageAdapter(val images: MutableList<ImageEntry>) : RecyclerView.Adapter<ImageViewHolder>() {
+class ImageAdapter(
+    val images: MutableList<ImageEntry>,
+    private val imageItemClickListener: ImageItemClickListener
+) : RecyclerView.Adapter<ImageViewHolder>() {
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
         ImageViewHolder(
             LayoutInflater.from(parent.context).inflate(
@@ -19,7 +24,7 @@ class ImageAdapter(val images: MutableList<ImageEntry>) : RecyclerView.Adapter<I
     override fun getItemCount() = images.size
 
     override fun onBindViewHolder(holder: ImageViewHolder, position: Int) {
-        holder.bindItem(images[position])
+        holder.bindItem(images[position], imageItemClickListener)
     }
 
 }

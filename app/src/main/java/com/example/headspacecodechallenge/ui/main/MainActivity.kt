@@ -1,6 +1,8 @@
 package com.example.headspacecodechallenge.ui.main
 
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -13,15 +15,19 @@ import com.example.headspacecodechallenge.db.entities.ImageEntry
 import com.example.headspacecodechallenge.network.WebService
 import com.example.headspacecodechallenge.repository.ImageRepositoryImpl
 import com.example.headspacecodechallenge.ui.adapter.ImageAdapter
+import com.example.headspacecodechallenge.ui.listener.ImageItemClickListener
 import com.example.headspacecodechallenge.viewmodel.MainViewModel
 import com.example.headspacecodechallenge.viewmodel.factory.MainViewModelFactory
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.item_photo.*
 
-class MainActivity : AppCompatActivity() {
+
+class MainActivity : AppCompatActivity(), ImageItemClickListener {
 
     lateinit var viewModel: MainViewModel
     lateinit var imageAdapter: ImageAdapter
     private var imageDatabase: ImageDatabase? = null
+    private var pageCounter = 1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,14 +44,36 @@ class MainActivity : AppCompatActivity() {
 
         viewModel.state.observe(this, Observer { appState ->
             when (appState) {
-                is MainViewModel.AppState.EMPTY -> displayEmpty()
                 is MainViewModel.AppState.SUCCESS -> displayImages(appState.imageList)
                 is MainViewModel.AppState.ERROR -> displayMessage(appState.message)
+                is MainViewModel.AppState.LOADING -> displayLoading()
+                is MainViewModel.AppState.EMPTY -> displayEmpty()
             }
         })
 
         if (!viewModel.loaded) {
-            viewModel.getImages()
+            viewModel.getImages(pageCounter)
+        }
+    }
+
+    private fun displayLoading() {
+        progressBar.visibility = View.VISIBLE
+        rvImages.visibility = View.GONE
+        containerMessage.visibility = View.GONE
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.activity_main, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.action_refresh -> {
+                viewModel.getImages(pageCounter)
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
         }
     }
 
@@ -57,8 +85,13 @@ class MainActivity : AppCompatActivity() {
         progressBar.visibility = View.GONE
         rvImages.visibility = View.VISIBLE
         containerMessage.visibility = View.GONE
-        Toast.makeText(this, "There are no Items to display", Toast.LENGTH_LONG)
-            .show()
+        if (imageAdapter.itemCount > 0) {
+            Toast.makeText(this, "No New Items were added", Toast.LENGTH_LONG)
+                .show()
+        } else {
+            Toast.makeText(this, "There are no New Items to add", Toast.LENGTH_LONG)
+                .show()
+        }
     }
 
     private fun displayImages(images: List<ImageEntry>) {
@@ -70,8 +103,7 @@ class MainActivity : AppCompatActivity() {
         progressBar.visibility = View.GONE
         rvImages.visibility = View.VISIBLE
         containerMessage.visibility = View.GONE
-        Toast.makeText(this, "There are no Items to display", Toast.LENGTH_LONG)
-            .show()
+        pageCounter++
     }
 
     private fun displayMessage(message: String) {
@@ -89,7 +121,17 @@ class MainActivity : AppCompatActivity() {
 
     private fun initRecyclerView() {
         rvImages.layoutManager = LinearLayoutManager(this)
-        imageAdapter = ImageAdapter(mutableListOf())
+        imageAdapter = ImageAdapter(mutableListOf(), this)
         rvImages.adapter = imageAdapter
+    }
+
+    override fun onItemClick() {
+        if (imageAuthor.visibility == View.GONE) {
+            imageAuthor.visibility = View.VISIBLE
+            imageDimensions.visibility = View.VISIBLE
+        } else {
+            imageAuthor.visibility = View.GONE
+            imageDimensions.visibility = View.GONE
+        }
     }
 }

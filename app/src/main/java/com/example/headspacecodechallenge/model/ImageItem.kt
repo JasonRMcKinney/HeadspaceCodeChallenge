@@ -14,5 +14,5 @@ data class ImageItem(
     @Json(name = "url")
     val url: String,
     @Json(name = "download_url")
-    val downloadUrl: String
+    val download_url: String
 )
