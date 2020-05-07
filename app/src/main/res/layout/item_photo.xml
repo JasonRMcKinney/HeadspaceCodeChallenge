@@ -28,6 +28,7 @@
                 android:layout_height="wrap_content"
                 android:contentDescription="@string/defaultContDesc"
                 android:padding="4dp"
+                android:scaleType="fitXY"
                 tools:src="@mipmap/ic_launcher" />
 
         </androidx.cardview.widget.CardView>

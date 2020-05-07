@@ -4,9 +4,6 @@ import com.example.headspacecodechallenge.db.ImageDatabase
 import com.example.headspacecodechallenge.db.entities.ImageEntry
 import com.example.headspacecodechallenge.model.ImageItem
 import com.example.headspacecodechallenge.network.WebService
-import io.reactivex.Single
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
 
 class ImageRepositoryImpl(
     private val database: ImageDatabase?,
@@ -14,21 +11,19 @@ class ImageRepositoryImpl(
 ) :
     ImageRepository {
 
-    override fun allImages(): List<ImageEntry> {
+    override suspend fun allImages(): List<ImageEntry> {
         if (database != null) {
             return database.imageDao().getAllImages()
         }
         return emptyList()
     }
 
-    override fun insertImage(image: ImageEntry) {
+    override suspend fun insertImage(image: ImageEntry) {
         database?.imageDao()?.insertImages(image)
     }
 
-    override fun webImages(): Single<Array<ImageItem>> {
+    override suspend fun webImages(): Array<ImageItem> {
         return WebService.instance.getImages()
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
     }
 
 
